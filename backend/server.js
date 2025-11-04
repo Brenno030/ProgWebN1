@@ -7,7 +7,7 @@ app.use(cors());
 app.use(express.json());
 
 // conexão com o banco (MongoDB, por exemplo)
-mongoose.connect("mongodb://localhost:27017/twitterclone")
+mongoose.connect("mongodb+srv://twiterclone1_db_user:twiterdb@cluster0.z4iuw4h.mongodb.net/twiter")
   .then(() => console.log("Banco conectado!"))
   .catch((err) => console.error("Erro ao conectar ao banco:", err));
 
