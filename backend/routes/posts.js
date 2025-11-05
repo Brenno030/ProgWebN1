@@ -14,7 +14,6 @@ router.get("/", async (req, res) => {
 });
 
 // criar post
-// criar post
 router.post("/", async (req, res) => {
   console.log("Recebido POST:", req.body); // <- adicione isto
   try {
