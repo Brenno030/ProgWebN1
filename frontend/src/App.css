@@ -78,10 +78,12 @@ body {
 /* FORM CREATE POST */
 .createPostPage {
   width: 100vw;
-  height: 70vh;
+  height: calc(100vh - 70px);
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-top: 70px;
+  box-sizing: border-box;
 }
 
 .formContainer {
@@ -91,9 +93,9 @@ body {
   width: 480px;
   padding: 25px;
   border: 2px solid #1da1f2;
-  border-radius: 10px;
+  border-radius: 12px;
   background-color: #fff;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
 .formContainer #inputCreatePost {
@@ -117,14 +119,17 @@ body {
   height: 45px;
   border: none;
   background-color: #1da1f2;
-  border-radius: 8px;
+  border-radius: 9999px;
   color: white;
   font-weight: 600;
-  transition: 0.2s;
+  font-size: 1rem;
+  letter-spacing: 0.3px;
+  transition: 0.25s ease;
 }
 
 .formContainer button:hover {
   background-color: #0d8ae3;
+  transform: scale(1.04);
   cursor: pointer;
 }
 
@@ -136,106 +141,311 @@ span {
 .navbar {
   width: 100%;
   height: 70px;
-  background-color: #1da1f2;
+  background-color: #086199;
   display: flex;
   align-items: center;
-  padding-left: 20px;
+  justify-content: space-between;
+  padding: 0 25px; /* 👈 diminui o espaçamento lateral */
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  box-sizing: border-box; /* 👈 evita ultrapassar a largura total */
 }
 
-.navbar a {
-  margin-left: 20px;
+.nav-left a {
+  margin-right: 20px;
   text-decoration: none;
   color: white;
   font-weight: 500;
-  transition: 0.2s;
+  transition: color 0.3s ease;
+  position: relative;
 }
 
-.navbar a:hover {
+.nav-right a {
+  text-decoration: none;
+  color: white;
+  font-weight: 600;
+  padding: 10px 20px;
+  border: 2px solid #e8f5fe;
+  border-radius: 9999px;
+  transition: all 0.3s ease;
+}
+
+.nav-right a:hover {
+  background-color: #e8f5fe;
+  color: #086199;
+  transform: scale(1.05);
+}
+
+.nav-left a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0;
+  height: 2px;
+  background-color: #e8f5fe;
+  transition: width 0.3s ease;
+}
+
+.nav-left a:hover {
   color: #e8f5fe;
-  text-decoration: underline;
 }
 
-/* PÁGINA DE POST ÚNICO */
-.postPage {
-  display: flex;
-  flex-direction: row;
+.nav-left a:hover::after {
   width: 100%;
-  height: 100%;
 }
 
-.leftSide,
-.rightSide {
-  flex: 50%;
-  height: calc(100vh - 70px);
+/* --- ESTILO BONITO PRA PÁGINA DE POST --- */
+.postPage {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #f5f8fa;
+  padding-top: 120px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  gap: 30px;
 }
 
-.rightSide .addCommentContainer {
-  flex: 20%;
-  width: 100%;
-  display: grid;
-  place-items: center;
-  margin-top: 25px;
+.postCard {
+  width: 600px;
+  background-color: #ffffff;
+  border: 1px solid #e1e8ed;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  padding: 30px;
+  text-align: left;
+  transition: all 0.3s ease;
 }
 
-.addCommentContainer input,
-.addCommentContainer button {
-  width: 220px;
-  height: 50px;
-  border-radius: 8px;
-  border: none;
-  font-size: 0.95rem;
+.postCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.postCard h2 {
+  font-size: 1.6rem;
+  color: #1da1f2;
+  margin-bottom: 15px;
+}
+
+.postCard p {
+  color: #14171a;
+  font-size: 1.1rem;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+.postCard small {
+  color: #657786;
+  font-size: 0.9rem;
+}
+
+/* SEÇÃO DE COMENTÁRIOS */
+.commentSection {
+  width: 600px;
+  background-color: #fff;
+  border-radius: 15px;
+  border: 1px solid #e1e8ed;
+  padding: 25px 30px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  margin-bottom: 40px;
+}
+
+.commentSection h3 {
+  color: #1da1f2;
+  font-size: 1.3rem;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.addCommentContainer {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 25px;
 }
 
 .addCommentContainer input {
-  border: 2px solid #1da1f2;
-  padding-left: 10px;
+  width: 70%;
+  height: 40px;
+  border-radius: 8px;
+  border: 1px solid #ccd6dd;
+  padding-left: 12px;
+  font-size: 1rem;
+  transition: 0.2s;
+}
+
+.addCommentContainer input:focus {
+  outline: none;
+  border-color: #1da1f2;
+  box-shadow: 0 0 5px rgba(29, 161, 242, 0.3);
 }
 
 .addCommentContainer button {
+  width: 25%;
+  height: 42px;
+  border: none;
   background-color: #1da1f2;
-  color: white;
+  color: #fff;
   font-weight: 600;
+  border-radius: 9999px;
+  cursor: pointer;
   transition: 0.2s;
 }
 
 .addCommentContainer button:hover {
   background-color: #0d8ae3;
-  cursor: pointer;
+  transform: scale(1.03);
 }
 
-.rightSide .listOfComments {
-  flex: 80%;
-  width: 100%;
+/* LISTA DE COMENTÁRIOS */
+.listOfComments {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.comment {
+  background-color: #f9fafb;
+  border: 1px solid #e1e8ed;
+  border-radius: 10px;
+  padding: 15px 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.comment p {
+  color: #14171a;
+  font-size: 1rem;
+  margin-bottom: 5px;
+}
+
+.comment small {
+  color: #657786;
+  font-size: 0.85rem;
+}
+
+/* PÁGINA DE CADASTRO */
+.cadastro-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f5f8fa;
+}
+
+.cadastro-box {
+  width: 420px;
+  background-color: #ffffff;
+  border: 2px solid #1da1f2;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  padding: 40px 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
 }
 
-.listOfComments .comment {
-  width: 70%;
-  padding: 20px;
-  border: 1px solid #e1e8ed;
-  border-radius: 10px;
-  margin-top: 20px;
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+.cadastro-box h2 {
+  color: #1da1f2;
+  font-size: 1.6rem;
+  margin-bottom: 25px;
 }
 
-#individual {
-  height: 500px;
+.cadastro-box form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.cadastro-box input {
+  height: 45px;
+  border-radius: 8px;
+  border: 1px solid #ccd6dd;
+  padding-left: 12px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.cadastro-box input:focus {
+  outline: none;
+  border-color: #1da1f2;
+  box-shadow: 0 0 5px rgba(29, 161, 242, 0.3);
+}
+
+.cadastro-box button {
+  height: 45px;
+  background-color: #1da1f2;
+  border: none;
+  border-radius: 9999px;
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.3px;
+  transition: 0.25s ease;
+}
+
+.cadastro-box button:hover {
+  background-color: #0d8ae3;
+  transform: scale(1.04);
+  cursor: pointer;
+}
+
+.cadastro-box p {
+  margin-top: 15px;
+  font-size: 0.9rem;
+  color: #657786;
+}
+
+.cadastro-box p a {
+  color: #1da1f2;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.cadastro-box p a:hover {
+  text-decoration: underline;
+}
+
+/* --- ESTILO PARA OS POSTS NA HOME --- */
+.postCard-home {
   width: 600px;
+  background-color: #fff;
+  border: 1px solid #e1e8ed;
+  border-radius: 15px;
+  padding: 20px 25px;
+  margin-top: 30px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  cursor: pointer;
 }
 
-#individual .title,
-#individual .footer {
-  font-size: 1.5rem;
+.postCard-home:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
 }
 
-#individual .body {
-  font-size: 1.2rem;
+.postHeader h3 {
+  color: #1da1f2;
+  font-size: 1.4rem;
+  margin-bottom: 6px;
+}
+
+.authorHome {
+  color: #657786;
+  font-size: 0.9rem;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.postBody {
+  color: #14171a;
+  font-size: 1.05rem;
+  line-height: 1.5;
 }

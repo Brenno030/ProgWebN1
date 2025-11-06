@@ -1,10 +1,11 @@
 import {BrowserRouter, Routes, Route, Link
 } from "react-router-dom";
 import './App.css';
-import Home from "../src/Pages/Home";
-import CreatePost from "./Pages/CreatePost";
+import Home from "./pages/Home";
+import CreatePost from "./pages/CreatePost";
 import NavBar from "./Components/NavBar";
-import Post from "./Pages/Post";
+import Post from "./pages/Post";
+import Cadastro from "./pages/Cadastro"
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
         <Route path="/" element={<Home/>}/>
         <Route path="/criarpost" element={<CreatePost/>}/>
         <Route path="/post/:id" element={<Post/>}/>
+        <Route path="/cadastro" element={<Cadastro />} />
        </Routes>
     </BrowserRouter>
  </div>

@@ -1,76 +1,70 @@
 import React, { useEffect, useState } from "react";
-import {useParams} from "react-router-dom";
+import { useParams } from "react-router-dom";
 import api from "../services/api";
-import PostCard from "../Components/PostCard";
+import '../App.css';
 
-function Post(){
-    let {id} = useParams();
+function Post() {
+  const { id } = useParams();
+  const [postObject, setPostObject] = useState({});
+  const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState("");
 
-    const [postObject, setPostObject] = useState({}); 
-    const [comments, setComments] = useState([]);
-    const [newComment, setNewComment] = useState("");
+  useEffect(() => {
+    if (!id) return;
+    
+    api.get(`/posts/${id}`).then((response) => {
+      setPostObject(response.data);
+    });
 
-    useEffect(() => {
-        api.get(`/posts/${id}`).then((response) => {
-            setPostObject(response.data);
-            console.log(response.data);
-        });
+    api.get(`/api/comments/${id}`).then((response) => {
+      setComments(response.data);
+    });
+  }, [id]);
 
-        api.get(`comments/${id}`).then((response) =>{
-            setComments(response.data);
-            console.log(response.data);
-        })
-    }, []);
+  const addComment = () => {
+    if (!newComment.trim()) return;
 
-    const addComment = () =>{
-        api.post("/comments", {
-            commentBody: newComment,
-            PostId: id,
-        }).then((response) =>{
-            const commentToAdd = {commentBody: newComment};
-            setComments([...comments, commentToAdd])
-            console.log("Comentário adionado com sucesso")
-            console.log(newComment);
-        })
-    }
+    api.post("/api/comments", {
+      commentBody: newComment,
+      PostId: id,
+    }).then((response) => {
+      setComments([...comments, response.data]);
+      setNewComment("");
+    });
+  };
 
+  return (
+    <div className="postPage">
+      <div className="postCard">
+        <h2>{postObject.title}</h2>
+        <p>{postObject.posttext}</p>
+        <small>Postado por: {postObject.username}</small>
+      </div>
 
-    return (
-        <div className="postPage">
-            <div className="leftSide">
-                <PostCard 
-                htmlId
-                title={postObject.title} 
-                posttext={postObject.posttext}
-                username={postObject.username}
-                />
-                {/* <div  className="post" id="individual">
-                    <div className="title"> {postObject.title} </div>
-                    <div className="body">{postObject.posttext}</div>
-                    <div className="footer">{postObject.username}</div>
-                </div> */}
-            </div>
+      <div className="commentSection">
+        <h3>Comentários</h3>
 
-            <div className="rightSide">
-
-                <div className="addCommentContainer">
-                    <input type="text" placeholder="Digite o comentário" value={newComment} onChange={(event)=> {setNewComment(event.target.value)}}/>
-                </div>
-                <button onClick={addComment}>Add Comentário</button>
-
-                <div className="listOfComments">
-                    {comments.map((comment, key) =>{
-                        return(
-                            <div className="comment">
-                                {comment.commentBody}
-                            </div>
-                        ) 
-                    })
-                    }
-                </div>
+        <div className="addCommentContainer">
+          <input
+            type="text"
+            placeholder="Digite um comentário..."
+            value={newComment}
+            onChange={(e) => setNewComment(e.target.value)}
+          />
+          <button onClick={addComment}>Adicionar</button>
         </div>
+
+        <div className="listOfComments">
+          {comments.map((comment) => (
+            <div className="comment" key={comment._id}>
+              <p>{comment.text}</p>
+              <small>{comment.username}</small>
             </div>
-    )
+          ))}
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default Post;

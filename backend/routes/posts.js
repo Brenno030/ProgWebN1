@@ -1,34 +1,38 @@
 import express from "express";
-import Post from "../models/Post.js";
+import Post from "../models/Post.js"; // importa o model certo
 
 const router = express.Router();
 
-// listar posts
+// ➤ Buscar todos os posts
 router.get("/", async (req, res) => {
   try {
-    const posts = await Post.find().sort({ createdAt: -1 });
+    const posts = await Post.find(); // busca tudo do Mongo
     res.json(posts);
   } catch (err) {
-    res.status(500).json({ error: "Erro ao listar posts" });
+    res.status(500).json({ error: "Erro ao buscar posts" });
   }
 });
 
-// criar post
-router.post("/", async (req, res) => {
-  console.log("Recebido POST:", req.body); // <- adicione isto
+// ➤ Buscar um post específico
+router.get("/:id", async (req, res) => {
   try {
-    const newPost = new Post({
-      username: req.body.username,
-      title: req.body.title,
-      posttext: req.body.posttext,
-      comments: []
-    });
+    const post = await Post.findById(req.params.id);
+    if (!post) return res.status(404).json({ message: "Post não encontrado" });
+    res.json(post);
+  } catch (err) {
+    res.status(500).json({ error: "Erro ao buscar post" });
+  }
+});
+
+// ➤ Criar um novo post
+router.post("/", async (req, res) => {
+  try {
+    const newPost = new Post(req.body);
     await newPost.save();
     res.status(201).json(newPost);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(400).json({ error: "Erro ao criar post" });
   }
 });
-;
 
 export default router;
