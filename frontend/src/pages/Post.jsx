@@ -9,7 +9,8 @@ function Post() {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
 
-  const usuarioLogado = localStorage.getItem("usuarioLogado"); // 👈 pega o usuário logado
+  // ✅ Pega o usuário logado corretamente
+  const usuarioLogado = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
     if (!id) return;
@@ -25,25 +26,25 @@ function Post() {
     });
   }, [id]);
 
+  // ✅ Função corrigida
   const addComment = async () => {
-  if (!newComment.trim()) return;
+    if (!newComment.trim()) return;
 
-  const user = JSON.parse(localStorage.getItem("user"));
-  const username = user ? user.username : "Anônimo";
+    const username = usuarioLogado ? usuarioLogado.username : "Anônimo";
 
-  try {
-    const response = await api.post("/api/comments", {
-      commentBody: newComment,
-      PostId: id,
-      username, // 👈 manda o nome do usuário pro backend
-    });
+    try {
+      const response = await api.post("/api/comments", {
+        commentBody: newComment,
+        PostId: id,
+        username, // manda o nome do usuário pro backend
+      });
 
-    setComments([...comments, response.data]);
-    setNewComment("");
-  } catch (err) {
-    console.error("Erro ao adicionar comentário:", err);
-  }
-};
+      setComments([...comments, response.data]);
+      setNewComment("");
+    } catch (err) {
+      console.error("Erro ao adicionar comentário:", err);
+    }
+  };
 
   return (
     <div className="postPage">
@@ -73,28 +74,33 @@ function Post() {
         </div>
 
         <div className="listOfComments">
-  {comments.length === 0 ? (
-    <p style={{ color: "#657786", textAlign: "center" }}>Nenhum comentário ainda</p>
-  ) : (
-    comments.map((comment) => {
-      const texto =
-        comment.text ||
-        comment.commentBody ||
-        comment.commentText ||
-        comment.body ||
-        "Comentário sem texto 😅";
+          {comments.length === 0 ? (
+            <p style={{ color: "#657786", textAlign: "center" }}>
+              Nenhum comentário ainda
+            </p>
+          ) : (
+            comments.map((comment) => {
+              const texto =
+                comment.text ||
+                comment.commentBody ||
+                comment.commentText ||
+                comment.body ||
+                "Comentário sem texto 😅";
 
-      const autor = comment.username || comment.user || "Anônimo";
+              const autor = comment.username || comment.user || "Anônimo";
 
-      return (
-        <div className="comment" key={comment._id || comment.id || Math.random()}>
-          <p>{texto}</p>
-          <small>{autor}</small>
+              return (
+                <div
+                  className="comment"
+                  key={comment._id || comment.id || Math.random()}
+                >
+                  <p>{texto}</p>
+                  <small>{autor}</small>
+                </div>
+              );
+            })
+          )}
         </div>
-      );
-    })
-  )}
-</div>
       </div>
     </div>
   );

@@ -33,7 +33,7 @@ function Cadastro() {
   navigate("/");
 } catch (err) {
   console.error("Erro ao cadastrar:", err);
-  alert("Erro ao cadastrar usuário. Verifique o console!");
+  alert("Erro ao cadastrar usuário. Usuário ja existente");
 }
   };
 
