@@ -1,19 +1,34 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import "../App.css";
+import { Link, useNavigate } from "react-router-dom";
 
-function NavBar() {
+function Navbar() {
+  const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    navigate("/");
+    window.location.reload(); // só pra atualizar o botão
+  };
+
   return (
     <nav className="navbar">
       <div className="nav-left">
         <Link to="/">Home</Link>
         <Link to="/criarpost">Novo Post</Link>
       </div>
+
       <div className="nav-right">
-        <Link to="/cadastro" className="btn-cadastrar">Cadastrar</Link>
+        {!user ? (
+          <Link to="/cadastro">Cadastrar</Link>
+        ) : (
+          <button onClick={handleLogout} className="logoutButton">
+            Sair ({user.username})
+          </button>
+        )}
       </div>
     </nav>
   );
 }
 
-export default NavBar;
+export default Navbar;

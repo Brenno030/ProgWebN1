@@ -3,7 +3,7 @@ import {BrowserRouter, Routes, Route, Link
 import './App.css';
 import Home from "./pages/Home";
 import CreatePost from "./pages/CreatePost";
-import NavBar from "./Components/NavBar";
+import NavBar from "./components/NavBar";
 import Post from "./pages/Post";
 import Cadastro from "./pages/Cadastro"
 

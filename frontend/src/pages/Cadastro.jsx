@@ -13,27 +13,28 @@ function Cadastro() {
     e.preventDefault();
 
     try {
-      const response = await api.post("/users", {
-        username,
-        email,
-        password,
-      });
+  const response = await api.post("/users", {
+    username,
+    email,
+    password,
+  });
 
-      console.log("Usuário cadastrado:", response.data);
-      alert("Usuário cadastrado com sucesso!");
+  console.log("Usuário cadastrado:", response.data);
+  alert("Usuário cadastrado com sucesso!");
 
-      // limpa os campos
-      setUsername("");
-      setEmail("");
-      setPassword("");
+  // salva o usuário localmente
+  localStorage.setItem("user", JSON.stringify({ username }));
 
-      // redireciona para a página de criar post
-      navigate("/");
+  // limpa os campos
+  setUsername("");
+  setEmail("");
+  setPassword("");
 
-    } catch (err) {
-      console.error("Erro ao cadastrar:", err);
-      alert("Erro ao cadastrar usuário. Verifique o console!");
-    }
+  navigate("/");
+} catch (err) {
+  console.error("Erro ao cadastrar:", err);
+  alert("Erro ao cadastrar usuário. Verifique o console!");
+}
   };
 
   return (

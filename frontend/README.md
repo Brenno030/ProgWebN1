@@ -1,18 +1,101 @@
-# React + Vite
+# 🐦 Twitter Clone
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+O **Twitter Clone** é uma aplicação web inspirada no Twitter, onde os usuários podem **criar posts**, **ver posts de outros usuários**, e **comentar** sobre eles.  
 
-Currently, two official plugins are available:
+O projeto foi desenvolvido com **React** no frontend e **Node.js/Express** no backend, unindo consumo de API, rotas, componentes reutilizáveis e estilização moderna.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## 🚀 Tecnologias Utilizadas
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+### Frontend
+- React  
+- React Router DOM  
+- Axios  
+- CSS Modularizado  
 
-Note: This will impact Vite dev & build performances.
+### Backend
+- Node.js  
+- Express  
+- CORS  
+- Nodemon  
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 📂 Estrutura do Projeto
+
+twitter-clone/
+├── backend/
+│ ├── routes/ # Rotas da API
+│ ├── controllers/ # Lógica das rotas
+│ ├── app.js # Configuração do servidor
+│ └── package.json
+├── frontend/
+│ ├── src/
+│ │ ├── Components/ # Componentes reutilizáveis (PostCard, Navbar)
+│ │ ├── Pages/ # Páginas (Home, Post)
+│ │ ├── App.jsx # Roteamento principal
+│ │ └── App.css # Estilos globais
+│ ├── package.json
+├── package.json
+└── README.md
+
+---
+
+## ⚡ Funcionalidades
+
+- Listagem de posts com título, conteúdo e usuário  
+- Navegação para página individual de post  
+- Formulário para criar posts  
+- Comentários em posts  
+- Estilização moderna com CSS e efeitos de hover  
+
+---
+
+## 🛠️ Rotas da API
+
+### Posts
+- **GET** `/posts` → Lista todos os posts  
+- **POST** `/posts` → Cria um novo post  
+
+### Comentários
+- **GET** `/comments/:postId` → Lista comentários de um post  
+- **POST** `/comments` → Cria um comentário em um post  
+
+---
+
+## 💻 Instalação
+
+Clone o projeto:
+
+```bash
+git clone https://github.com/seu-usuario/twitter-clone.git
+cd twitter-clone
+
+Backend
+cd backend
+npm install
+npm run dev
+
+
+O servidor backend iniciará em: http://localhost:3000
+
+Frontend
+cd frontend
+npm install
+npm run dev
+
+
+O servidor frontend iniciará em: http://localhost:5173 (ou a porta que o Vite usar)
+
+📌 Observações
+
+Certifique-se de que o backend esteja rodando antes de acessar o frontend
+
+O frontend consome os endpoints do backend para listar e criar posts
+
+O CSS é moderno, com sombras, transições e cores inspiradas no Twitter
+
+👨‍💻 Autor
+
+Sara Vieira Silva – Estudante de informática, apaixonada por programação e desenvolvimento web.

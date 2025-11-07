@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import api from "../services/api";
-import '../App.css';
+import "../App.css";
 
 function Post() {
   const { id } = useParams();
@@ -9,36 +9,50 @@ function Post() {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
 
+  const usuarioLogado = localStorage.getItem("usuarioLogado"); // 👈 pega o usuário logado
+
   useEffect(() => {
     if (!id) return;
-    
+
+    // busca o post
     api.get(`/posts/${id}`).then((response) => {
       setPostObject(response.data);
     });
 
+    // busca os comentários do post
     api.get(`/api/comments/${id}`).then((response) => {
       setComments(response.data);
     });
   }, [id]);
 
-  const addComment = () => {
-    if (!newComment.trim()) return;
+  const addComment = async () => {
+  if (!newComment.trim()) return;
 
-    api.post("/api/comments", {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const username = user ? user.username : "Anônimo";
+
+  try {
+    const response = await api.post("/api/comments", {
       commentBody: newComment,
       PostId: id,
-    }).then((response) => {
-      setComments([...comments, response.data]);
-      setNewComment("");
+      username, // 👈 manda o nome do usuário pro backend
     });
-  };
+
+    setComments([...comments, response.data]);
+    setNewComment("");
+  } catch (err) {
+    console.error("Erro ao adicionar comentário:", err);
+  }
+};
 
   return (
     <div className="postPage">
       <div className="postCard">
         <h2>{postObject.title}</h2>
         <p>{postObject.posttext}</p>
-        <small>Postado por: {postObject.username}</small>
+        <small>
+          Postado por: {postObject.username || "Anônimo"}
+        </small>
       </div>
 
       <div className="commentSection">
@@ -47,7 +61,11 @@ function Post() {
         <div className="addCommentContainer">
           <input
             type="text"
-            placeholder="Digite um comentário..."
+            placeholder={
+              usuarioLogado
+                ? "Comente algo..."
+                : "Comente como Anônimo..."
+            }
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
           />
@@ -55,13 +73,28 @@ function Post() {
         </div>
 
         <div className="listOfComments">
-          {comments.map((comment) => (
-            <div className="comment" key={comment._id}>
-              <p>{comment.text}</p>
-              <small>{comment.username}</small>
-            </div>
-          ))}
+  {comments.length === 0 ? (
+    <p style={{ color: "#657786", textAlign: "center" }}>Nenhum comentário ainda</p>
+  ) : (
+    comments.map((comment) => {
+      const texto =
+        comment.text ||
+        comment.commentBody ||
+        comment.commentText ||
+        comment.body ||
+        "Comentário sem texto 😅";
+
+      const autor = comment.username || comment.user || "Anônimo";
+
+      return (
+        <div className="comment" key={comment._id || comment.id || Math.random()}>
+          <p>{texto}</p>
+          <small>{autor}</small>
         </div>
+      );
+    })
+  )}
+</div>
       </div>
     </div>
   );
